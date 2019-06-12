@@ -75,6 +75,7 @@ public class SplitOrders {
      */
     private List<Order> divideOrders(List<Item> sortedItems) {
         List<Order> orders = new LinkedList<>();
+        long minPrice = sortedItems.get(sortedItems.size() - 1).price;
         while (!sortedItems.isEmpty()) {
             Order order = new Order();
             List<Item> orderItems = new LinkedList<>();
@@ -86,6 +87,9 @@ public class SplitOrders {
             order.totalPrice = first.price;
             if (first.price < MAX_PCK_PRICE) {
                 for (int i = 0; i < sortedItems.size();) {
+                    if ((order.totalPrice + minPrice) > MAX_PCK_PRICE) {
+                        break;
+                    }
                     Item item = sortedItems.get(i);
                     if (item.price + order.totalPrice < MAX_PCK_PRICE) {
                         orderItems.add(item);
